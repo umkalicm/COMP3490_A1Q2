@@ -216,8 +216,8 @@ public class KalicMarkoA1Q2 implements GLEventListener
 	private void roundBottomLeftCorner( GL2 gl, float x, float y, int row, int col )
 	{
 		float arcX, arcY;
-		float rX = ( width / maze.length ) / 4;
-		float rY = ( height / maze[0].length ) / 4;
+		float rX = ( width / maze.length ) / 3;
+		float rY = ( height / maze[0].length ) / 3;
 		
 		if ( ( col == 0 || maze[row][col - 1] ) && ( row == 0 || maze[row - 1][col] ) )
 		{		
@@ -251,8 +251,8 @@ public class KalicMarkoA1Q2 implements GLEventListener
 	private void roundBottomRightCorner( GL2 gl, float x, float y, int row, int col )
 	{		
 		float arcX, arcY;
-		float rX = ( width / maze.length ) / 4;
-		float rY = ( height / maze[0].length ) / 4;
+		float rX = ( width / maze.length ) / 3;
+		float rY = ( height / maze[0].length ) / 3;
 		
 		if ( ( col == maze[0].length || maze[row][col + 1] ) && ( row == 0 || maze[row - 1][col] ) )
 		{		
@@ -286,8 +286,8 @@ public class KalicMarkoA1Q2 implements GLEventListener
 	private void roundTopRightCorner( GL2 gl, float x, float y, int row, int col )
 	{
 		float arcX, arcY;
-		float rX = ( width / maze.length ) / 4;
-		float rY = ( height / maze[0].length ) / 4;
+		float rX = ( width / maze.length ) / 3;
+		float rY = ( height / maze[0].length ) / 3;
 		
 		if ( ( col == maze[0].length || maze[row][col + 1] ) && ( row == maze.length || maze[row + 1][col] ) )
 		{		
@@ -321,8 +321,8 @@ public class KalicMarkoA1Q2 implements GLEventListener
 	private void roundTopLeftCorner( GL2 gl, float x, float y, int row, int col )
 	{
 		float arcX, arcY;
-		float rX = ( width / maze.length ) / 4;
-		float rY = ( height / maze[0].length ) / 4;
+		float rX = ( width / maze.length ) / 3;
+		float rY = ( height / maze[0].length ) / 3;
 		
 		if ( ( col == 0 || maze[row][col - 1] ) && ( row == maze.length || maze[row + 1][col] ) )
 		{		
