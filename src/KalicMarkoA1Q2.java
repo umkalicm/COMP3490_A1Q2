@@ -18,6 +18,8 @@ public class KalicMarkoA1Q2 implements GLEventListener
 	public static final int INITIAL_WIDTH = 640;
 	public static final int INITIAL_HEIGHT = 640;
 
+	final float DEGS_TO_RADS = (float)Math.PI / 180;
+	
 	public static void main( String[] args )
 	{
 		final Frame frame = new Frame( WINDOW_TITLE );
@@ -167,9 +169,7 @@ public class KalicMarkoA1Q2 implements GLEventListener
 		// TODO: drawing code here
 		
 		// For resizing, take width/height of window, divide by numbers of rows/columns in maze
-		// This will give width and height of each "square" in the maze
-		
-		
+		// This will give width and height of each "square" in the maze		
 		if ( maze != null )
 		{
 			float x, y;
@@ -193,12 +193,17 @@ public class KalicMarkoA1Q2 implements GLEventListener
 						gl.glColor3f( 1.0f, 0.0f, 0.0f );
 						gl.glBegin( GL2.GL_QUADS );
 
-							gl.glVertex2f( x, y );
-							gl.glVertex2f( x + deltaX, y );
-							gl.glVertex2f( x + deltaX, y + deltaY );
-							gl.glVertex2f( x, y + deltaY );
+							gl.glVertex2f( x, y );						//bottom left
+							gl.glVertex2f( x + deltaX, y );				//bottom right
+							gl.glVertex2f( x + deltaX, y + deltaY );	//top right
+							gl.glVertex2f( x, y + deltaY );				//top left
 
 						gl.glEnd( );
+						
+						roundBottomLeftCorner( gl, x, y, row, col );
+						roundBottomRightCorner( gl, x + deltaX, y, row, col );
+						roundTopRightCorner( gl, x + deltaX, y + deltaY, row, col );
+						roundTopLeftCorner( gl, x, y + deltaY, row, col );
 					}
 
 					x += deltaX;
@@ -207,6 +212,149 @@ public class KalicMarkoA1Q2 implements GLEventListener
 				x = 0.0f;
 				y += deltaY;
 			}
+			
+			x = -deltaX;
+			y = -deltaY;
+		}
+	}
+	
+	private void roundBottomLeftCorner( GL2 gl, float x, float y, int row, int col )
+	{
+		float arcX, arcY;
+		float rX = ( height / maze[0].length ) / 4;
+		float rY = ( width / maze.length ) / 4;
+		
+		if ( ( col == 0 || maze[row][col - 1] ) && ( row == 0 || maze[row - 1][col] ) )
+		{		
+			gl.glColor3f( 0.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_QUADS );
+			
+				gl.glVertex2f( x, y );
+				gl.glVertex2f( x, y + rY );
+				gl.glVertex2f( x + rX, y + rY );
+				gl.glVertex2f( x + rX, y );
+			
+			gl.glEnd( );
+			
+			gl.glColor3f( 1.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_TRIANGLE_FAN );
+			
+				gl.glVertex2f( x + rX, y + rY );
+			
+				for ( int degs = 180; degs <= 270; degs += 1 )
+				{
+					arcX = (float)( rX * Math.cos( degs * DEGS_TO_RADS ) + x + rX );
+					arcY = (float)( rY * Math.sin( degs * DEGS_TO_RADS ) + y + rY );
+					
+					gl.glVertex2f( arcX, arcY );
+				}
+			
+			gl.glEnd( );		
+		}
+	}
+	
+	private void roundBottomRightCorner( GL2 gl, float x, float y, int row, int col )
+	{		
+		float arcX, arcY;
+		float rX = ( height / maze[0].length ) / 4;
+		float rY = ( width / maze.length ) / 4;
+		
+		if ( ( col == maze[0].length || maze[row][col + 1] ) && ( row == 0 || maze[row - 1][col] ) )
+		{		
+			gl.glColor3f( 0.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_QUADS );
+			
+				gl.glVertex2f( x, y );
+				gl.glVertex2f( x, y + rY );
+				gl.glVertex2f( x - rX, y + rY );
+				gl.glVertex2f( x - rX, y );
+			
+			gl.glEnd( );
+			
+			gl.glColor3f( 1.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_TRIANGLE_FAN );
+			
+				gl.glVertex2f( x - rX, y + rY );
+				
+				for ( int degs = 270; degs <= 360; degs += 1 )
+				{
+					arcX = (float)( rX * Math.cos( degs * DEGS_TO_RADS ) + x - rX );
+					arcY = (float)( rY * Math.sin( degs * DEGS_TO_RADS ) + y + rY );
+					
+					gl.glVertex2f( arcX, arcY );
+				}
+				
+			gl.glEnd( );
+		}
+	}
+	
+	private void roundTopRightCorner( GL2 gl, float x, float y, int row, int col )
+	{
+		float arcX, arcY;
+		float rX = ( height / maze[0].length ) / 4;
+		float rY = ( width / maze.length ) / 4;
+		
+		if ( ( col == maze[0].length || maze[row][col + 1] ) && ( row == maze.length || maze[row + 1][col] ) )
+		{		
+			gl.glColor3f( 0.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_QUADS );
+			
+				gl.glVertex2f( x, y );
+				gl.glVertex2f( x, y - rY );
+				gl.glVertex2f( x - rX, y - rY );
+				gl.glVertex2f( x - rX, y );
+			
+			gl.glEnd( );
+			
+			gl.glColor3f( 1.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_TRIANGLE_FAN );
+			
+				gl.glVertex2f( x - rX, y - rY );
+			
+				for ( int degs = 0; degs <= 90; degs += 1 )
+				{
+					arcX = (float)( rX * Math.cos( degs * DEGS_TO_RADS ) + x - rX );
+					arcY = (float)( rY * Math.sin( degs * DEGS_TO_RADS ) + y - rY );
+					
+					gl.glVertex2f( arcX, arcY );
+				}
+			
+			gl.glEnd( );		
+		}
+	}
+	
+	private void roundTopLeftCorner( GL2 gl, float x, float y, int row, int col )
+	{
+		float arcX, arcY;
+		float rX = ( height / maze[0].length ) / 4;
+		float rY = ( width / maze.length ) / 4;
+		
+		if ( ( col == 0 || maze[row][col - 1] ) && ( row == maze.length || maze[row + 1][col] ) )
+		{		
+			gl.glColor3f( 0.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_QUADS );
+			
+				gl.glVertex2f( x, y );
+				gl.glVertex2f( x, y - rY );
+				gl.glVertex2f( x + rX, y - rY );
+				gl.glVertex2f( x + rX, y );
+			
+			gl.glEnd( );
+			
+			gl.glColor3f( 1.0f, 0.0f, 0.0f );
+			gl.glBegin( GL2.GL_TRIANGLE_FAN );
+			
+				gl.glVertex2f( x + rX, y - rY );
+			
+				for ( int degs = 90; degs <= 180; degs += 1 )
+				{
+					arcX = (float)( rX * Math.cos( degs * DEGS_TO_RADS ) + x + rX );
+					arcY = (float)( rY * Math.sin( degs * DEGS_TO_RADS ) + y - rY );
+					
+					gl.glVertex2f( arcX, arcY );
+				}
+			
+			gl.glEnd( );		
 		}
 	}
 
