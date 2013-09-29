@@ -13,8 +13,7 @@ public class KalicMarkoA1Q2 implements GLEventListener
 
 	public static final String MAZEFILE = "maze1.txt";
 
-	public static final String WINDOW_TITLE = "A1Q2: Marko Kalic"; // TODO:
-																	// change
+	public static final String WINDOW_TITLE = "A1Q2: Marko Kalic";
 	public static final int INITIAL_WIDTH = 640;
 	public static final int INITIAL_HEIGHT = 640;
 
@@ -150,10 +149,10 @@ public class KalicMarkoA1Q2 implements GLEventListener
 		// TODO: choose your own background colour, and uncomment the lines
 		// below to turn on line antialiasing
 		gl.glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		// gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-		// gl.glEnable(GL2.GL_LINE_SMOOTH);
-		// gl.glEnable(GL2.GL_BLEND);
-		// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
+		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
@@ -165,17 +164,13 @@ public class KalicMarkoA1Q2 implements GLEventListener
 
 		final GL2 gl = drawable.getGL( ).getGL2( );
 		gl.glClear( GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT );
-
-		// TODO: drawing code here
-		
-		// For resizing, take width/height of window, divide by numbers of rows/columns in maze
-		// This will give width and height of each "square" in the maze		
+			
 		if ( maze != null )
 		{
 			float x, y;
 			float deltaX, deltaY;
 			
-			deltaX = width / ( maze[0].length );
+			deltaX = width / ( maze[0].length - 2 );
 			deltaY = height / ( maze.length - 2 );
 			
 			//origin of first square
@@ -209,7 +204,7 @@ public class KalicMarkoA1Q2 implements GLEventListener
 					x += deltaX;
 				}
 
-				x = 0.0f;
+				x = -deltaX;
 				y += deltaY;
 			}
 			
